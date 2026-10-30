@@ -2,7 +2,7 @@ name: Compilação Automatizada do SamPlayer
 
 on:
   push:
-    branches: [ "main" ] # Dispara toda vez que você atualiza a branch principal
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -16,16 +16,16 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '17' # Versão ideal e estável para ferramentas modernas do Android
+        java-version: '17'
 
     - name: Garantindo permissão de execução para o Gradle
       run: chmod +x gradlew
 
-    - name: Compilando o APK de Produção (Release)
-      run: ./gradlew assembleRelease
+    - name: Compilando o APK de Teste (Debug)
+      run: ./gradlew assembleDebug
 
     - name: Disponibilizando o APK final para download
       uses: actions/upload-artifact@v4
       with:
         name: SamPlayer-APK-Otimizado
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
+        path: app/build/outputs/apk/debug/*.apk
