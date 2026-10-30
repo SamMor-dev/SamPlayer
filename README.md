@@ -21,7 +21,7 @@ A arquitetura do motor, a lógica de concorrência nas threads de áudio, o gere
 ---
 
 ### ⚙️ Diferenciais Técnicos & Otimização
-* **Bare-Metal Mobile:** Roda liso e de forma extremamente ágil em dispositivos físicos reais (como o Galaxy A26), consumindo o mínimo de Megabytes de memória RAM.
+* **Bare-Metal Mobile:** Roda liso e de forma extremamente ágil em dispositivos físicos reais (como o meu Samsung Galaxy A26, pois testei nele), consumindo o mínimo de Megabytes de memória RAM.
 * **Instalação Direta:** Provisionamento limpo via depuração USB, operando sem dependências de pacotes gigantes de telemetria ou frameworks redundantes.
 * **Interface Técnica Otimizada:** Painel visual enxuto focado em navegação fluida de faixas e carregamento assíncrono de arquivos para evitar congelamentos na TUI/GUI.
 
