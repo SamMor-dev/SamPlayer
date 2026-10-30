@@ -1,0 +1,8 @@
+{
+  "name": "SamPlayer",
+  "description": "Minimalist, zero-bloat local music player for MP3, WAV, and MIDI files with format-based separation and low RAM usage.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
