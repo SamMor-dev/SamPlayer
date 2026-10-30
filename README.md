@@ -56,29 +56,67 @@ As músicas são segregadas em abas dedicadas (**All**, **MP3**, **WAV**, **MIDI
 
 ---
 
-## 📦 Como Compilar e Instalar
+## 🛠️ Como Abrir, Compilar e Criar Mods no Android Studio (Recomendado)
 
-### Opção 1: Usando o Script Automatizado `build.sh` (Recomendado)
+O **Android Studio** é a forma mais prática, visual e rápida de compilar o SamPlayer e criar suas próprias modificações (**mods**), pois ele já inclui seu próprio JDK integrado e gerencia as licenças do SDK 36 graficamente.
 
-O repositório inclui o script [`build.sh`](build.sh) na raiz do projeto. Ele detecta se o seu dispositivo (ex: Galaxy A26) está conectado via USB com depuração ativada e oferece opções para compilar e instalar automaticamente ou apenas gerar o APK:
+### 1. Instalando o Android Studio no Linux (Debian / Ubuntu)
+
+Você pode instalar o Android Studio automaticamente usando o script incluso no projeto:
 
 ```bash
-# 1. Torne o script executável (caso ainda não esteja)
-chmod +x build.sh
+chmod +x InstallStudio.sh
+./InstallStudio.sh
+```
+Selecione a opção **`1) Instalar o Android Studio no Linux / Debian`**. O assistente fará o download da versão oficial mais recente, configurará os atalhos no seu menu de aplicativos e inicializará o SDK.
 
-# 2. Execute o assistente de compilação
-./build.sh
+*(Alternativamente, você pode baixar pelo site oficial: [developer.android.com/studio](https://developer.android.com/studio)).*
+
+### 2. Abrindo o Projeto no Android Studio
+
+1. Inicie o Android Studio.
+2. Na tela inicial (ou no menu superior), clique em **File > Open**.
+3. Selecione a **pasta raiz do SamPlayer** (onde está o arquivo `settings.gradle.kts` e `build.gradle.kts`).
+4. O Android Studio iniciará o **Gradle Sync** automático. Se aparecer um aviso em azul no canto inferior (`Install missing platform(s) and sync project`), clique nele para baixar o SDK 36.1 com apenas 1 clique.
+
+### 3. Executando no Celular (ex: Samsung Galaxy A26)
+
+1. Conecte seu smartphone via cabo USB e certifique-se de que a **Depuração USB** está ativada nas Opções do Desenvolvedor.
+2. Seu aparelho aparecerá na barra superior da IDE (ex: `Samsung SM-A266...`).
+3. Clique no botão verde de **Play** (`Shift + F10`) no topo para compilar e iniciar o SamPlayer diretamente no celular.
+4. Para apenas gerar o arquivo de instalação, vá em **Build > Build Bundle(s) / APK(s) > Build APK(s)**. O APK final ficará em `app/build/outputs/apk/debug/app-debug.apk`.
+
+### 🎨 Guia Rápido de Modding (Como Modificar o Projeto)
+
+O SamPlayer foi escrito com código limpo e desacoplado para você poder customizar à vontade:
+
+| O que você quer customizar? | Arquivo para editar |
+|:---|:---|
+| **Cores, Temas e Paleta Neon** | `app/src/main/java/com/example/ui/theme/Color.kt` e `Theme.kt` |
+| **Telas e Interface do Usuário (Compose)** | `app/src/main/java/com/example/ui/screens/MainScreen.kt` |
+| **Mini Player e Player Expandido** | `app/src/main/java/com/example/ui/components/MiniPlayerBar.kt` e `FullPlayerDialog.kt` |
+| **Lógica do Motor de Áudio e Sintetizador** | `app/src/main/java/com/example/player/AudioPlayerEngine.kt` |
+| **Formatos e Filtros de Áudio (MP3/WAV/MIDI)** | `app/src/main/java/com/example/model/AudioFormat.kt` |
+| **Estrutura do Banco de Dados Local** | `app/src/main/java/com/example/data/local/` (Room Entities & DAOs) |
+
+---
+
+## 📦 Como Compilar via Terminal
+
+### Opção 1: Usando o Script Automatizado `InstallStudio.sh`
+
+```bash
+chmod +x InstallStudio.sh
+./InstallStudio.sh
 ```
 
-O script oferece um menu interativo:
-- `1) Compilar APK Debug`
-- `1) Compilar APK Debug direto (-x test)` (pula testes redundantes e gera o APK rapidamente)
-- `2) Compilar e Instalar no celular via USB (adb install)`
-- `3) Limpar cache e recompilar tudo (clean assembleDebug -x test)`
-- `4) Instalar ferramentas do sistema (Debian / Linux: JDK 17, ADB)`
-- `5) Executar suíte de testes unitários e Robolectric`
-
-O script detecta automaticamente o diretório padrão do Android SDK no Linux (como `~/Android/Sdk`), exporta as variáveis `ANDROID_HOME` e `ANDROID_SDK_ROOT` e cria o arquivo `local.properties` caso necessário.
+Menu de opções do script:
+- `1) Instalar o Android Studio no Linux / Debian`
+- `2) Compilar APK Debug direto (-x test)` (pula testes redundantes e gera o APK rapidamente)
+- `3) Compilar e Instalar no celular via USB (Samsung Galaxy A26)`
+- `4) Limpar cache e recompilar tudo (clean assembleDebug -x test)`
+- `5) Instalar ferramentas de linha de comando no Debian (OpenJDK 21, ADB)`
+- `6) Executar testes unitários e Robolectric`
 
 ### Opção 2: Compilação Manual via Gradle Wrapper
 
