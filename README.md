@@ -72,9 +72,13 @@ chmod +x build.sh
 
 O script oferece um menu interativo:
 - `1) Compilar APK Debug`
-- `2) Compilar e Instalar via USB (adb install)`
-- `3) Limpar e Recompilar (clean assemble)`
-- `4) Executar Testes Unitários e Robolectric`
+- `1) Compilar APK Debug direto (-x test)` (pula testes redundantes e gera o APK rapidamente)
+- `2) Compilar e Instalar no celular via USB (adb install)`
+- `3) Limpar cache e recompilar tudo (clean assembleDebug -x test)`
+- `4) Instalar ferramentas do sistema (Debian / Linux: JDK 17, ADB)`
+- `5) Executar suíte de testes unitários e Robolectric`
+
+O script detecta automaticamente o diretório padrão do Android SDK no Linux (como `~/Android/Sdk`), exporta as variáveis `ANDROID_HOME` e `ANDROID_SDK_ROOT` e cria o arquivo `local.properties` caso necessário.
 
 ### Opção 2: Compilação Manual via Gradle Wrapper
 
@@ -82,8 +86,8 @@ O script oferece um menu interativo:
 # Dar permissão de execução ao wrapper
 chmod +x gradlew
 
-# Compilar o APK em modo Debug
-./gradlew :app:assembleDebug
+# Compilar o APK em modo Debug pulando testes unitários (-x test)
+./gradlew assembleDebug -x test
 
 # Instalar no dispositivo conectado via ADB
 adb install -r app/build/outputs/apk/debug/app-debug.apk
