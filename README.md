@@ -27,17 +27,36 @@ A arquitetura do motor, a lógica de concorrência nas threads de áudio, o gere
 
 ---
 
-## 🚀 Instalação & Teste Local
+## 🛠️ Compilação Nativa & Instalação (Gradle)
 
-Se você possui o ambiente de desenvolvimento configurado e o dispositivo conectado via USB:
+Para garantir máxima transparência e performance bare-metal, o binário do **SamPlayer** deve ser fundido localmente utilizando o wrapper nativo do Gradle. Isso elimina dependências ocultas e garante controle absoluto sobre o código.
 
-1. Clone o repositório:
+### Pré-requisitos
+* **Java Development Kit (JDK):** Versão >= 17 configurada no seu ambiente.
+* **Android SDK:** Linhas de comando (`build-tools` e `platform-tools` para acesso ao `adb`).
+
+### Passo a Passo
+
+1. **Clone o repositório estável:**
    ```bash
-   git clone https://github.com/SamMor-dev/SamPlayer.git
+   git clone https://github.com/SamMor-dev/SamPlayer.git && cd SamPlayer
    ```
-2. Compile e instale diretamente no hardware via ADB:
+
+2. **Conceda permissão de execução ao wrapper do Gradle:**
    ```bash
-   ./gradlew installDebug
+   chmod +x gradlew
+   ```
+
+3. **Compile o APK de depuração (Debug):**
+   ```bash
+   ./gradlew assembleDebug
+   ```
+   *O arquivo binário final compilado será gerado exatamente no diretório:*  
+   `app/build/outputs/apk/debug/app-debug.apk`
+
+4. **Instale diretamente no hardware do dispositivo via USB (com o ADB ativo):**
+   ```bash
+   adb install app/build/outputs/apk/debug/app-debug.apk
    ```
 
 ---
