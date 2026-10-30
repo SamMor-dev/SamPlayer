@@ -77,7 +77,51 @@ detect_and_export_android_sdk() {
 detect_and_export_android_sdk
 
 # ==============================================================================
-# 2. DETECTOR DE DISTRIBUIÇÃO LINUX E INSTALADOR DE DEPENDÊNCIAS
+# 2. ACEITE AUTOMÁTICO DAS LICENÇAS DO ANDROID SDK VIA SDKMANAGER
+# ==============================================================================
+auto_accept_sdk_licenses() {
+    local SDKMANAGER_BIN=""
+    local CANDIDATES=(
+        "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+        "$ANDROID_HOME/cmdline-tools/bin/sdkmanager"
+        "$ANDROID_HOME/tools/bin/sdkmanager"
+        "/usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager"
+        "/usr/lib/android-sdk/tools/bin/sdkmanager"
+        "/usr/bin/sdkmanager"
+    )
+
+    # 1. Verifica se sdkmanager já está no PATH
+    if command -v sdkmanager >/dev/null 2>&1; then
+        SDKMANAGER_BIN="$(command -v sdkmanager)"
+    else
+        # 2. Busca nos caminhos mais comuns do Linux
+        for bin in "${CANDIDATES[@]}"; do
+            if [ -x "$bin" ]; then
+                SDKMANAGER_BIN="$bin"
+                break
+            fi
+        done
+        # 3. Busca dinâmica dentro de cmdline-tools no ANDROID_HOME
+        if [ -z "$SDKMANAGER_BIN" ] && [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME/cmdline-tools" ]; then
+            SDKMANAGER_BIN=$(find "$ANDROID_HOME/cmdline-tools" -name "sdkmanager" -type f -perm -u+x 2>/dev/null | head -n 1 || true)
+        fi
+    fi
+
+    if [ -n "$SDKMANAGER_BIN" ]; then
+        echo -e "${CYAN}==> Aceitando licenças do Android SDK de forma automática (${SDKMANAGER_BIN})...${NC}"
+        if [ -n "$ANDROID_HOME" ]; then
+            yes 2>/dev/null | "$SDKMANAGER_BIN" --sdk_root="$ANDROID_HOME" --licenses >/dev/null 2>&1 || true
+        else
+            yes 2>/dev/null | "$SDKMANAGER_BIN" --licenses >/dev/null 2>&1 || true
+        fi
+        echo -e "${GREEN}✓ Termos e licenças do Android SDK verificados e aceitos.${NC}"
+    else
+        echo -e "${YELLOW}ℹ 'sdkmanager' não encontrado nos caminhos padrão. Prosseguindo...${NC}"
+    fi
+}
+
+# ==============================================================================
+# 3. DETECTOR DE DISTRIBUIÇÃO LINUX E INSTALADOR DE DEPENDÊNCIAS
 # ==============================================================================
 detect_distro() {
     if [ -f /etc/os-release ]; then
@@ -213,6 +257,7 @@ echo ""
 
 case "$CHOICE" in
     1)
+        auto_accept_sdk_licenses
         echo -e "${CYAN}==> Fundindo APK Debug direto no metal (pulando testes redundantes via -x test)...${NC}"
         $GRADLE_CMD assembleDebug -x test
         
@@ -230,6 +275,7 @@ case "$CHOICE" in
         ;;
 
     2)
+        auto_accept_sdk_licenses
         echo -e "${CYAN}==> Compilando o APK do SamPlayer (assembleDebug -x test)...${NC}"
         $GRADLE_CMD assembleDebug -x test
         
@@ -272,6 +318,7 @@ case "$CHOICE" in
         ;;
 
     3)
+        auto_accept_sdk_licenses
         echo -e "${CYAN}==> Limpando e recompilando tudo do zero (-x test)...${NC}"
         $GRADLE_CMD clean assembleDebug -x test
         echo -e "${GREEN}${BOLD}✔ Limpeza e recompilação concluídas com sucesso!${NC}"
@@ -283,6 +330,7 @@ case "$CHOICE" in
         ;;
 
     5)
+        auto_accept_sdk_licenses
         echo -e "${CYAN}==> Executando suíte completa de testes unitários e Robolectric...${NC}"
         $GRADLE_CMD :app:testDebugUnitTest
         echo -e "${GREEN}${BOLD}✔ Todos os testes foram validados com êxito!${NC}"
