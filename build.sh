@@ -168,7 +168,7 @@ EOF
 auto_accept_sdk_licenses
 
 # ==============================================================================
-# 3. DETECTOR DE DISTRIBUIÇÃO LINUX E INSTALADOR DE DEPENDÊNCIAS
+# 3. DETECTOR DE DISTRIBUIÇÃO LINUX
 # ==============================================================================
 detect_distro() {
     if [ -f /etc/os-release ]; then
@@ -181,6 +181,94 @@ detect_distro() {
         DISTRO_NAME="Linux"
     fi
 }
+
+detect_distro
+
+# ==============================================================================
+# 4. DETECÇÃO E VALIDAÇÃO DO COMPILADOR JAVA (JDK / JAVAC)
+# ==============================================================================
+detect_and_configure_jdk() {
+    local FOUND_JDK=""
+
+    # 1. Se javac já estiver no PATH, verifica a instalação real
+    if command -v javac >/dev/null 2>&1; then
+        local JAVAC_REAL
+        JAVAC_REAL=$(readlink -f "$(command -v javac)")
+        local DIR
+        DIR=$(dirname "$(dirname "$JAVAC_REAL")")
+        if [ -x "$DIR/bin/javac" ]; then
+            FOUND_JDK="$DIR"
+        fi
+    fi
+
+    # 2. Se JAVA_HOME estiver definido com bin/javac
+    if [ -z "$FOUND_JDK" ] && [ -n "$JAVA_HOME" ] && [ -x "$JAVA_HOME/bin/javac" ]; then
+        FOUND_JDK="$JAVA_HOME"
+    fi
+
+    # 3. Busca por diretórios padrão de JDK no Debian/Linux
+    if [ -z "$FOUND_JDK" ]; then
+        local CANDIDATES=(
+            "/usr/lib/jvm/java-21-openjdk-amd64"
+            "/usr/lib/jvm/java-17-openjdk-amd64"
+            "/usr/lib/jvm/default-java"
+            "/usr/lib/jvm/java-21-openjdk"
+            "/usr/lib/jvm/java-17-openjdk"
+            "/opt/jdk-21"
+            "/opt/jdk-17"
+        )
+        for cand in "${CANDIDATES[@]}"; do
+            if [ -x "$cand/bin/javac" ]; then
+                FOUND_JDK="$cand"
+                break
+            fi
+        done
+    fi
+
+    # 4. Caso /usr/lib/jvm/java-21-openjdk-amd64 exista mas SEM javac (JRE instalado)
+    if [ -z "$FOUND_JDK" ]; then
+        echo -e "${YELLOW}⚠ Atenção: Compilador Java (javac / JAVA_COMPILER) ausente no sistema!${NC}"
+        echo -e "${YELLOW}  A pasta /usr/lib/jvm/java-21-openjdk-amd64 possui apenas o JRE (sem bin/javac).${NC}"
+        echo -e "${CYAN}==> Instalando automaticamente o compilador JDK completo (openjdk-21-jdk)...${NC}"
+
+        case "$DISTRO_ID" in
+            debian|ubuntu|linuxmint|pop)
+                sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
+                ;;
+            fedora|rhel|centos)
+                sudo dnf install -y java-21-openjdk-devel
+                ;;
+            arch|manjaro)
+                sudo pacman -S --needed jdk-21-openjdk
+                ;;
+            opensuse*|suse)
+                sudo zypper install -y java-21-openjdk-devel
+                ;;
+            *)
+                echo -e "${RED}[ERRO] Instale o pacote 'openjdk-21-jdk' com o compilador javac.${NC}"
+                ;;
+        esac
+
+        # Re-validação após instalação do pacote
+        if [ -x "/usr/lib/jvm/java-21-openjdk-amd64/bin/javac" ]; then
+            FOUND_JDK="/usr/lib/jvm/java-21-openjdk-amd64"
+        elif command -v javac >/dev/null 2>&1; then
+            local JAVAC_REAL
+            JAVAC_REAL=$(readlink -f "$(command -v javac)")
+            FOUND_JDK=$(dirname "$(dirname "$JAVAC_REAL")")
+        fi
+    fi
+
+    if [ -n "$FOUND_JDK" ]; then
+        export JAVA_HOME="$FOUND_JDK"
+        export PATH="$JAVA_HOME/bin:$PATH"
+        echo -e "${GREEN}✓ Compilador Java (javac) pronto:${NC} $JAVA_HOME"
+    else
+        echo -e "${RED}[ERRO] Compilador javac não disponível. Execute: sudo apt install openjdk-21-jdk${NC}"
+    fi
+}
+
+detect_and_configure_jdk
 
 install_system_dependencies() {
     detect_distro
