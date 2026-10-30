@@ -90,11 +90,11 @@ auto_accept_sdk_licenses() {
     # (comum no Debian em /usr/lib/android-sdk pertencente a root), ajusta permissões
     if [ ! -w "$ANDROID_HOME" ]; then
         echo -e "${YELLOW}ℹ O diretório do SDK ($ANDROID_HOME) pertence a root.${NC}"
-        echo -e "${CYAN}==> Ajustando permissões para permitir a gravação de licenças e download do SDK 36...${NC}"
-        sudo chown -R "$(id -un):$(id -gn)" "$ANDROID_HOME" 2>/dev/null || true
+        echo -e "${CYAN}==> Ajustando permissões para seu usuário ($(id -un)) gravar licenças e baixar componentes...${NC}"
+        sudo chown -R "$(id -un):$(id -gn)" "$ANDROID_HOME"
     fi
 
-    mkdir -p "$LICENSES_DIR" 2>/dev/null || sudo mkdir -p "$LICENSES_DIR"
+    mkdir -p "$LICENSES_DIR"
 
     # 1. Gravação direta dos hashes oficiais das licenças do Google Android SDK
     # Este é o padrão oficial da indústria (CI/CD) para garantir aceite 100% autônomo
