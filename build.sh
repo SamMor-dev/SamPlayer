@@ -98,7 +98,7 @@ install_system_dependencies() {
     case "$DISTRO_ID" in
         debian|ubuntu|linuxmint|pop)
             echo -e "${CYAN}==> Instalando ferramentas essenciais para Debian/Ubuntu (apt-get)...${NC}"
-            echo -e "Pacotes: OpenJDK 17, ADB (Android Tools), Unzip, Curl, Wget, Git"
+            echo -e "Pacotes: OpenJDK 21, ADB (Android Tools), Unzip, Curl, Wget, Git"
             sudo apt-get update
             sudo apt-get install -y openjdk-21-jdk adb android-sdk-platform-tools-common unzip curl wget git
             echo -e "${GREEN}${BOLD}✔ Ferramentas instaladas com sucesso no Debian!${NC}"
