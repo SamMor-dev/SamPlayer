@@ -33,7 +33,7 @@ Se você possui o ambiente de desenvolvimento configurado e o dispositivo conect
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com
+   git clone https://github.com/SamMor-dev/SamPlayer.git
    ```
 2. Compile e instale diretamente no hardware via ADB:
    ```bash
