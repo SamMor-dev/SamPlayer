@@ -100,22 +100,22 @@ install_system_dependencies() {
             echo -e "${CYAN}==> Instalando ferramentas essenciais para Debian/Ubuntu (apt-get)...${NC}"
             echo -e "Pacotes: OpenJDK 17, ADB (Android Tools), Unzip, Curl, Wget, Git"
             sudo apt-get update
-            sudo apt-get install -y openjdk-17-jdk adb android-sdk-platform-tools-common unzip curl wget git
+            sudo apt-get install -y openjdk-21-jdk adb android-sdk-platform-tools-common unzip curl wget git
             echo -e "${GREEN}${BOLD}✔ Ferramentas instaladas com sucesso no Debian!${NC}"
             ;;
         fedora|rhel|centos)
             echo -e "${CYAN}==> Instalando ferramentas para Fedora/RHEL (dnf)...${NC}"
-            sudo dnf install -y java-17-openjdk-devel android-tools unzip curl wget git
+            sudo dnf install -y java-21-openjdk-devel android-tools unzip curl wget git
             echo -e "${GREEN}${BOLD}✔ Ferramentas instaladas com sucesso no Fedora!${NC}"
             ;;
         arch|manjaro)
             echo -e "${CYAN}==> Instalando ferramentas para Arch Linux (pacman)...${NC}"
-            sudo pacman -S --needed jdk17-openjdk android-tools unzip curl wget git
+            sudo pacman -S --needed jdk-21-openjdk android-tools unzip curl wget git
             echo -e "${GREEN}${BOLD}✔ Ferramentas instaladas com sucesso no Arch!${NC}"
             ;;
         opensuse*|suse)
             echo -e "${CYAN}==> Instalando ferramentas para openSUSE (zypper)...${NC}"
-            sudo zypper install -y java-17-openjdk-devel android-tools unzip curl wget git
+            sudo zypper install -y java-21-openjdk-devel android-tools unzip curl wget git
             echo -e "${GREEN}${BOLD}✔ Ferramentas instaladas com sucesso no openSUSE!${NC}"
             ;;
         *)
