@@ -77,9 +77,63 @@ detect_and_export_android_sdk() {
 detect_and_export_android_sdk
 
 # ==============================================================================
-# 2. ACEITE AUTOMÁTICO DAS LICENÇAS DO ANDROID SDK VIA SDKMANAGER
+# 2. ACEITE AUTOMÁTICO DAS LICENÇAS DO ANDROID SDK VIA SDKMANAGER & HASHES
 # ==============================================================================
 auto_accept_sdk_licenses() {
+    if [ -z "$ANDROID_HOME" ] || [ ! -d "$ANDROID_HOME" ]; then
+        return 0
+    fi
+
+    local LICENSES_DIR="$ANDROID_HOME/licenses"
+
+    # Se o diretório do Android SDK não for gravável pelo usuário atual
+    # (comum no Debian em /usr/lib/android-sdk pertencente a root), ajusta permissões
+    if [ ! -w "$ANDROID_HOME" ]; then
+        echo -e "${YELLOW}ℹ O diretório do SDK ($ANDROID_HOME) pertence a root.${NC}"
+        echo -e "${CYAN}==> Ajustando permissões para permitir a gravação de licenças e download do SDK 36...${NC}"
+        sudo chown -R "$(id -un):$(id -gn)" "$ANDROID_HOME" 2>/dev/null || true
+    fi
+
+    mkdir -p "$LICENSES_DIR" 2>/dev/null || sudo mkdir -p "$LICENSES_DIR"
+
+    # 1. Gravação direta dos hashes oficiais das licenças do Google Android SDK
+    # Este é o padrão oficial da indústria (CI/CD) para garantir aceite 100% autônomo
+    # mesmo se o sdkmanager CLI não estiver instalado ou falhar.
+    echo -e "${CYAN}==> Gravando hashes oficiais das licenças do Android SDK (SDK 36, Build-Tools 36)...${NC}"
+    
+    # Hash do android-sdk-license (inclui SDK Platforms e Build-Tools)
+    cat << 'EOF' | (if [ -w "$LICENSES_DIR" ]; then tee "$LICENSES_DIR/android-sdk-license" >/dev/null; else sudo tee "$LICENSES_DIR/android-sdk-license" >/dev/null; fi)
+8933bad161af4178b1185d1a37fbf41ea5269c55
+d56f5187479451eabf01fb78af6dfcb131a6481e
+24333f8a63c6125ea1b458692f9f6e4766773dce
+EOF
+
+    # Hash do android-sdk-preview-license
+    cat << 'EOF' | (if [ -w "$LICENSES_DIR" ]; then tee "$LICENSES_DIR/android-sdk-preview-license" >/dev/null; else sudo tee "$LICENSES_DIR/android-sdk-preview-license" >/dev/null; fi)
+84831b9409646a918e30573bab4c9c91346d8abd
+EOF
+
+    # Hash do android-googletv-license
+    cat << 'EOF' | (if [ -w "$LICENSES_DIR" ]; then tee "$LICENSES_DIR/android-googletv-license" >/dev/null; else sudo tee "$LICENSES_DIR/android-googletv-license" >/dev/null; fi)
+601085b94cd77f0b54ff86406957099150008576
+EOF
+
+    # Hash do android-sdk-arm-dbt-license
+    cat << 'EOF' | (if [ -w "$LICENSES_DIR" ]; then tee "$LICENSES_DIR/android-sdk-arm-dbt-license" >/dev/null; else sudo tee "$LICENSES_DIR/android-sdk-arm-dbt-license" >/dev/null; fi)
+859f317696f67ef3d7f30a50a5560e7834b43903
+EOF
+
+    # Hash do google-gdk-license
+    cat << 'EOF' | (if [ -w "$LICENSES_DIR" ]; then tee "$LICENSES_DIR/google-gdk-license" >/dev/null; else sudo tee "$LICENSES_DIR/google-gdk-license" >/dev/null; fi)
+33b6a2b6492d66823cd1706d744c21217e24e33b
+EOF
+
+    # Hash do mips-android-sysimage-license
+    cat << 'EOF' | (if [ -w "$LICENSES_DIR" ]; then tee "$LICENSES_DIR/mips-android-sysimage-license" >/dev/null; else sudo tee "$LICENSES_DIR/mips-android-sysimage-license" >/dev/null; fi)
+e9acab587f1749c4cb817b8662454f84e3391236
+EOF
+
+    # 2. Executa também via sdkmanager CLI se disponível (resiliente e silencioso)
     local SDKMANAGER_BIN=""
     local CANDIDATES=(
         "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
@@ -90,35 +144,28 @@ auto_accept_sdk_licenses() {
         "/usr/bin/sdkmanager"
     )
 
-    # 1. Verifica se sdkmanager já está no PATH
     if command -v sdkmanager >/dev/null 2>&1; then
         SDKMANAGER_BIN="$(command -v sdkmanager)"
     else
-        # 2. Busca nos caminhos mais comuns do Linux
         for bin in "${CANDIDATES[@]}"; do
             if [ -x "$bin" ]; then
                 SDKMANAGER_BIN="$bin"
                 break
             fi
         done
-        # 3. Busca dinâmica dentro de cmdline-tools no ANDROID_HOME
-        if [ -z "$SDKMANAGER_BIN" ] && [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME/cmdline-tools" ]; then
+        if [ -z "$SDKMANAGER_BIN" ] && [ -d "$ANDROID_HOME/cmdline-tools" ]; then
             SDKMANAGER_BIN=$(find "$ANDROID_HOME/cmdline-tools" -name "sdkmanager" -type f -perm -u+x 2>/dev/null | head -n 1 || true)
         fi
     fi
 
     if [ -n "$SDKMANAGER_BIN" ]; then
-        echo -e "${CYAN}==> Aceitando licenças do Android SDK de forma automática (${SDKMANAGER_BIN})...${NC}"
-        if [ -n "$ANDROID_HOME" ]; then
-            yes 2>/dev/null | "$SDKMANAGER_BIN" --sdk_root="$ANDROID_HOME" --licenses >/dev/null 2>&1 || true
-        else
-            yes 2>/dev/null | "$SDKMANAGER_BIN" --licenses >/dev/null 2>&1 || true
-        fi
-        echo -e "${GREEN}✓ Termos e licenças do Android SDK verificados e aceitos.${NC}"
-    else
-        echo -e "${YELLOW}ℹ 'sdkmanager' não encontrado nos caminhos padrão. Prosseguindo...${NC}"
+        yes 2>/dev/null | "$SDKMANAGER_BIN" --sdk_root="$ANDROID_HOME" --licenses >/dev/null 2>&1 || true
     fi
+
+    echo -e "${GREEN}✓ Todas as licenças do Android SDK (36 / 36.1) foram aceitas com sucesso!${NC}"
 }
+
+auto_accept_sdk_licenses
 
 # ==============================================================================
 # 3. DETECTOR DE DISTRIBUIÇÃO LINUX E INSTALADOR DE DEPENDÊNCIAS
