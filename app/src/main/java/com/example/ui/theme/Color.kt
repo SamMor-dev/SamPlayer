@@ -32,14 +32,14 @@ val LightTextPrimary = Color(0xFF0F172A)
 val LightTextSecondary = Color(0xFF64748B)
 
 // ==========================================
-// 3. AZUL SONIC (#174C98 - Sonic the Hedgehog)
+// 3. AZUL PROFUNDO (#174C98 - Deep Blue)
 // ==========================================
-val SonicBlue = Color(0xFF174C98) // Azul icônico do Sonic the Hedgehog #174C98
+val DeepBlue = Color(0xFF174C98) // Deep Blue #174C98
 val BlueBg = Color(0xFF0A1C38)     // Fundo cobalto profundo sóbrio
 val BlueSurface = Color(0xFF10284E) // Superfície sólida marinho/cobalto
 val BlueSurfaceVariant = Color(0xFF17396C) // Variação de superfície com base #174C98
 val BlueBorder = Color(0xFF245499) // Borda sólida de suporte
-val BluePrimary = SonicBlue        // Cor primária oficial: #174C98
+val BluePrimary = DeepBlue        // Cor primária oficial: #174C98
 val BlueOnPrimary = Color(0xFFFFFFFF)
 val BlueSecondary = Color(0xFF4B85D8) // Tom azul secundário harmonizado
 val BlueTextPrimary = Color(0xFFF0F5FD)

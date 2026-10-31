@@ -51,7 +51,7 @@
           stroke-linejoin="round" />
   </g>
 
-  <!-- 5. Central Play Emblem (Solid Sonic Blue #174C98 & Pure White) -->
+  <!-- 5. Central Play Emblem (Solid Deep Blue #174C98 & Pure White) -->
   <g id="play-symbol">
     <!-- Solid circular backing plate -->
     <circle cx="256" cy="256" r="48" fill="#1A202C" stroke="#2D3748" stroke-width="2" />
