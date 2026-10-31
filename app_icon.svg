@@ -22,7 +22,7 @@
   <!-- 3. Minimalist Equalizer Frequency Marks (Solid Slate) -->
   <g id="equalizer-markers" fill="#2E3748">
     <rect x="80" y="236" width="6" height="40" rx="3" />
-    <rect x="96" y="212" width="6" height="88" rx="3" fill="#3B82F6" />
+    <rect x="96" y="212" width="6" height="88" rx="3" fill="#174C98" />
     <rect x="112" y="228" width="6" height="56" rx="3" />
   </g>
 
@@ -65,12 +65,12 @@
              L 254 281
              C 250 284, 244 281, 244 276
              Z"
-          fill="#3B82F6" />
+          fill="#174C98" />
   </g>
 
   <!-- 6. Solid Format Accent Dots (WAV, MP3, MIDI) -->
   <g id="format-dots">
-    <circle cx="236" cy="420" r="4" fill="#4A89C8">
+    <circle cx="236" cy="420" r="4" fill="#174C98">
       <title>WAV</title>
     </circle>
     <circle cx="256" cy="420" r="4" fill="#E2E8F0">

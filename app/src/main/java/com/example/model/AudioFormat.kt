@@ -16,7 +16,7 @@ enum class AudioFormat(
     val accentColor: Color
 ) {
     MP3("mp3", "audio/mpeg", "MP3", Color(0xFFCC8538)),
-    WAV("wav", "audio/wav", "WAV", Color(0xFF4A89C8)),
+    WAV("wav", "audio/wav", "WAV", Color(0xFF174C98)),
     MIDI("mid", "audio/midi", "MIDI", Color(0xFF7E72A6));
 
     companion object {

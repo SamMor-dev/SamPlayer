@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 enum class AppThemeMode(val title: String, val description: String) {
     DARK("Escuro", "Carvão fosco e ardósia sóbria"),
     LIGHT("Claro", "Branco estúdio e acabamento papel"),
-    BLUE("Azul Sóbrio", "Azul marinho nórdico fosco")
+    BLUE("Azul Sonic", "Azul icônico Sonic the Hedgehog #174C98")
 }
 
 // 1. Escuro (Sober Dark - Carvão e ardósia matte)
@@ -61,18 +61,18 @@ private val SoberLightColorScheme = lightColorScheme(
     outline = LightBorder
 )
 
-// 3. Azul Sóbrio (Nordic Navy - Marinho fosco sólido, sem gradientes)
+// 3. Azul Sonic (#174C98 - Azul cobalto sóbrio, sólido, sem gradientes)
 private val SoberBlueColorScheme = darkColorScheme(
-    primary = BluePrimary,
+    primary = BluePrimary, // SonicBlue #174C98
     onPrimary = BlueOnPrimary,
     primaryContainer = BlueSurfaceVariant,
     onPrimaryContainer = BlueTextPrimary,
     secondary = BlueSecondary,
-    onSecondary = BlueOnPrimary,
-    secondaryContainer = Color(0xFF243F5E),
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFF143B77),
     onSecondaryContainer = BlueTextPrimary,
-    tertiary = Color(0xFFB0C8E0),
-    onTertiary = Color(0xFF0A1522),
+    tertiary = Color(0xFF91B8F0),
+    onTertiary = Color(0xFF0A1C38),
     background = BlueBg,
     onBackground = BlueTextPrimary,
     surface = BlueSurface,

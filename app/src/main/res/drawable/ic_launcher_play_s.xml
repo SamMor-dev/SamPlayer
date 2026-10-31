@@ -39,5 +39,5 @@
     <!-- Solid Geometric Play Triangle -->
     <path
         android:pathData="M50.5,47.5 L60,54 L50.5,60.5 Z"
-        android:fillColor="#3B82F6" />
+        android:fillColor="#174C98" />
 </vector>
