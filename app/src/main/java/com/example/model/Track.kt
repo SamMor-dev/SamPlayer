@@ -3,6 +3,8 @@
 
 package com.example.model
 
+import java.util.Locale
+
 /**
  * Lightweight immutable representation of an audio track.
  *
@@ -49,9 +51,9 @@ data class Track(
             val kb = sizeBytes / 1024.0
             val mb = kb / 1024.0
             return if (mb >= 1.0) {
-                String.format("%.1f MB", mb)
+                String.format(Locale.US, "%.1f MB", mb)
             } else {
-                String.format("%.0f KB", kb)
+                String.format(Locale.US, "%.0f KB", kb)
             }
         }
 }

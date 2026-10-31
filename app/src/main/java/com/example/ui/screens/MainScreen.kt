@@ -11,6 +11,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,11 +28,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.AudioFile
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.FileOpen
@@ -41,15 +42,10 @@ import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.TextButton
-import com.example.ui.theme.AppThemeMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,12 +53,14 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -84,9 +82,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.model.AudioFormat
 import com.example.ui.FilterCategory
-import com.example.ui.MainUiState
 import com.example.ui.MainViewModel
 import com.example.ui.SortOption
 import com.example.ui.components.AudioFormatChipBar
@@ -95,6 +91,7 @@ import com.example.ui.components.FullPlayerSheet
 import com.example.ui.components.MiniPlayerBar
 import com.example.ui.components.PermissionCard
 import com.example.ui.components.TrackItemView
+import com.example.ui.theme.AppThemeMode
 
 /**
  * Main application screen: Displays segmented audio library, real-time search,
@@ -207,7 +204,7 @@ fun MainScreen(
                             onClick = { showSortMenu = true },
                             modifier = Modifier.testTag("sort_menu_button")
                         ) {
-                            Icon(imageVector = Icons.Filled.Sort, contentDescription = "Sort order")
+                            Icon(imageVector = Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort order")
                         }
                         DropdownMenu(
                             expanded = showSortMenu,
@@ -352,7 +349,6 @@ fun MainScreen(
             if (uiState.displayedTracks.isEmpty() && !uiState.isLoading) {
                 EmptyStateView(
                     selectedFilter = uiState.selectedFilter,
-                    hasAudioPermission = hasAudioPermission,
                     onGenerateSamples = { viewModel.generateStarterSamples() },
                     onPickFile = { filePickerLauncher.launch(arrayOf("audio/*")) },
                     modifier = Modifier.weight(1f)
@@ -540,7 +536,6 @@ fun MainScreen(
 @Composable
 private fun EmptyStateView(
     selectedFilter: FilterCategory,
-    hasAudioPermission: Boolean,
     onGenerateSamples: () -> Unit,
     onPickFile: () -> Unit,
     modifier: Modifier = Modifier
