@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -37,6 +38,7 @@ import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sort
@@ -45,6 +47,9 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.TextButton
+import com.example.ui.theme.AppThemeMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -112,6 +117,7 @@ fun MainScreen(
     var showSortMenu by remember { mutableStateOf(false) }
     var showMoreMenu by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
+    var showThemeDialog by remember { mutableStateOf(false) }
 
     // SAF Document Picker (Zero-permission fallback for importing individual audio files)
     val context = LocalContext.current
@@ -174,43 +180,13 @@ fun MainScreen(
                             }
                         )
                     } else {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Text(
-                                text = "SamPlayer",
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 20.sp
-                                )
+                        Text(
+                            text = "SamPlayer",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
                             )
-
-                            // Hardware Efficiency & Low RAM Badge
-                            Surface(
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                                shape = RoundedCornerShape(8.dp)
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Speed,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.size(12.dp)
-                                    )
-                                    Text(
-                                        text = "Low RAM",
-                                        color = MaterialTheme.colorScheme.primary,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 10.sp
-                                    )
-                                }
-                            }
-                        }
+                        )
                     }
                 },
                 actions = {
@@ -254,6 +230,14 @@ fun MainScreen(
                         }
                     }
 
+                    // Theme selector button
+                    IconButton(
+                        onClick = { showThemeDialog = true },
+                        modifier = Modifier.testTag("theme_selector_button")
+                    ) {
+                        Icon(imageVector = Icons.Filled.Palette, contentDescription = "Alternar tema")
+                    }
+
                     // Overflow Menu
                     Box {
                         IconButton(
@@ -266,6 +250,14 @@ fun MainScreen(
                             expanded = showMoreMenu,
                             onDismissRequest = { showMoreMenu = false }
                         ) {
+                            DropdownMenuItem(
+                                text = { Text("Aparência / Tema") },
+                                leadingIcon = { Icon(Icons.Filled.Palette, contentDescription = null) },
+                                onClick = {
+                                    showThemeDialog = true
+                                    showMoreMenu = false
+                                }
+                            )
                             DropdownMenuItem(
                                 text = { Text("Rescan Storage") },
                                 leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null) },
@@ -451,7 +443,7 @@ fun MainScreen(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Licensed under the BSD 2-Clause License.\n\nUltra-low RAM music player tailored for native .mp3, .wav, and .mid playback with clean format separation and zero background bloat.",
+                        text = "Licensed under the BSD 2-Clause License.\n\nHigh-performance native music player tailored for .mp3, .wav, and .mid playback with clean format separation and zero background bloat.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 12.sp
@@ -461,6 +453,81 @@ fun MainScreen(
             confirmButton = {
                 Button(onClick = { showAboutDialog = false }) {
                     Text("Close")
+                }
+            }
+        )
+    }
+
+    // App Theme Selection Dialog
+    if (showThemeDialog) {
+        AlertDialog(
+            onDismissRequest = { showThemeDialog = false },
+            title = {
+                Text(
+                    text = "Aparência do SamPlayer",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            },
+            text = {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(
+                        text = "Selecione o esquema de cores sóbrio e sem gradientes:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    AppThemeMode.entries.forEach { mode ->
+                        val isSelected = uiState.themeMode == mode
+                        Surface(
+                            onClick = {
+                                viewModel.setThemeMode(mode)
+                                showThemeDialog = false
+                            },
+                            shape = RoundedCornerShape(12.dp),
+                            color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                            border = BorderStroke(
+                                width = 1.dp,
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = mode.title,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Text(
+                                        text = mode.description,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                RadioButton(
+                                    selected = isSelected,
+                                    onClick = {
+                                        viewModel.setThemeMode(mode)
+                                        showThemeDialog = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showThemeDialog = false }) {
+                    Text("Fechar")
                 }
             }
         )
@@ -521,7 +588,7 @@ private fun EmptyStateView(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "SamPlayer plays MP3, WAV, and MIDI files without RAM bloat. Add demo samples or open local files below.",
+                text = "SamPlayer plays MP3, WAV, and MIDI files with maximum native performance. Add demo samples or open local files below.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,

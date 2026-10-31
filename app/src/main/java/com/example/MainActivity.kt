@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.MainViewModel
 import com.example.ui.screens.MainScreen
@@ -38,26 +39,30 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            MyApplicationTheme {
-                val appCtx = applicationContext
+            val appCtx = applicationContext
 
-                // Resolve runtime audio permission depending on Android OS version
-                val audioPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    Manifest.permission.READ_MEDIA_AUDIO
-                } else {
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                }
+            val audioPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_AUDIO
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
 
-                var hasPermission by remember {
-                    mutableStateOf(
-                        ContextCompat.checkSelfPermission(appCtx, audioPermission) == PackageManager.PERMISSION_GRANTED
-                    )
-                }
-
-                // Instantiate ViewModel with vanilla Factory (Zero Hilt/Dagger bloat)
-                val viewModel: MainViewModel = viewModel(
-                    factory = MainViewModel.Factory(appCtx)
+            var hasPermission by remember {
+                mutableStateOf(
+                    ContextCompat.checkSelfPermission(
+                        appCtx,
+                        audioPermission
+                    ) == PackageManager.PERMISSION_GRANTED
                 )
+            }
+
+            // Instantiate ViewModel with vanilla Factory (Zero Hilt/Dagger bloat)
+            val viewModel: MainViewModel = viewModel(
+                factory = MainViewModel.Factory(appCtx)
+            )
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            MyApplicationTheme(themeMode = uiState.themeMode) {
 
                 // Permission request launcher
                 val permissionLauncher = rememberLauncherForActivityResult(

@@ -15,6 +15,7 @@ import com.example.model.Track
 import com.example.player.AudioPlayerEngine
 import com.example.player.PlaybackState
 import com.example.player.RepeatMode
+import com.example.ui.theme.AppThemeMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -55,6 +56,11 @@ class MainViewModel(
     private val _selectedFolder = MutableStateFlow<String?>(null)
     private val _statusMessage = MutableStateFlow<String?>(null)
     private val _isFullPlayerVisible = MutableStateFlow(false)
+    private val _themeMode = MutableStateFlow(AppThemeMode.DARK)
+
+    fun setThemeMode(mode: AppThemeMode) {
+        _themeMode.value = mode
+    }
 
     // Cached current playlist for sequential next/previous playback
     private var currentActivePlaylist: List<Track> = emptyList()
@@ -72,7 +78,8 @@ class MainViewModel(
         _selectedFolder,
         _isLoading,
         _statusMessage,
-        _isFullPlayerVisible
+        _isFullPlayerVisible,
+        _themeMode
     ) { args: Array<Any?> ->
         @Suppress("UNCHECKED_CAST")
         val allTracks = args[0] as List<Track>
@@ -86,6 +93,7 @@ class MainViewModel(
         val loading = args[7] as Boolean
         val status = args[8] as String?
         val fullPlayer = args[9] as Boolean
+        val theme = args[10] as AppThemeMode
 
         // Format and favorite count metrics
         var mp3 = 0
@@ -148,6 +156,7 @@ class MainViewModel(
             folders = folders,
             selectedFolder = folder,
             isFullPlayerVisible = fullPlayer,
+            themeMode = theme,
             statusMessage = status
         )
     }.stateIn(

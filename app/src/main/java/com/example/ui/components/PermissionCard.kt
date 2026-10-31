@@ -76,7 +76,7 @@ fun PermissionCard(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "SamPlayer reads local .mp3, .wav, and .mid files directly from your device with zero cloud tracking and zero RAM bloat.",
+                text = "SamPlayer reads local .mp3, .wav, and .mid files directly from your device with zero cloud tracking and pure native performance.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 13.sp

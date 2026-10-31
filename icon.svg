@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SamPlayer - Refined & Sober Vector Icon (S + Play Architecture)
+  Author: Sam Moreno
+  License: BSD 2-Clause License
+  Minimalist, flat design without neon or gradients. 100% editable in Figma, Inkscape, or Illustrator.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- 1. Background: Solid Matte Obsidian Canvas -->
+  <g id="background-container">
+    <rect width="512" height="512" rx="116" ry="116" fill="#12151B" />
+    <rect x="2" y="2" width="508" height="508" rx="114" ry="114" fill="none" stroke="#252C38" stroke-width="2" />
+  </g>
+
+  <!-- 2. Acoustic Sound Field (Minimalist Hairline Rings) -->
+  <g id="acoustic-rings" stroke="#1F2633" fill="none">
+    <circle cx="256" cy="256" r="184" stroke-width="1.5" stroke-dasharray="8 8" />
+    <circle cx="256" cy="256" r="140" stroke-width="1.5" />
+    <circle cx="256" cy="256" r="88" stroke-width="1.5" />
+  </g>
+
+  <!-- 3. Minimalist Equalizer Frequency Marks (Solid Slate) -->
+  <g id="equalizer-markers" fill="#2E3748">
+    <rect x="80" y="236" width="6" height="40" rx="3" />
+    <rect x="96" y="212" width="6" height="88" rx="3" fill="#3B82F6" />
+    <rect x="112" y="228" width="6" height="56" rx="3" />
+  </g>
+
+  <!-- 4. Hero Glyph: Refined Monogram "S" (Solid Platinum & Deep Slate) -->
+  <g id="letter-s-ribbon">
+    <!-- Upper Hook of the "S" -->
+    <path d="M 336 150
+             C 336 150, 260 118, 196 152
+             C 144 180, 150 236, 206 254
+             L 242 264"
+          fill="none"
+          stroke="#F1F5F9"
+          stroke-width="32"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+
+    <!-- Lower Hook of the "S" -->
+    <path d="M 270 248
+             L 306 258
+             C 362 276, 368 332, 316 360
+             C 252 394, 176 362, 176 362"
+          fill="none"
+          stroke="#F1F5F9"
+          stroke-width="32"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+  </g>
+
+  <!-- 5. Central Play Emblem (Solid Nordic Blue & Pure White) -->
+  <g id="play-symbol">
+    <!-- Solid circular backing plate -->
+    <circle cx="256" cy="256" r="48" fill="#1A202C" stroke="#2D3748" stroke-width="2" />
+    
+    <!-- Solid Geometric Play Triangle (Right Facing) -->
+    <!-- Vertices: Left Top (244, 234), Left Bottom (244, 278), Right Apex (282, 256) -->
+    <path d="M 244 236
+             C 244 231, 250 228, 254 231
+             L 282 251
+             C 286 253, 286 259, 282 261
+             L 254 281
+             C 250 284, 244 281, 244 276
+             Z"
+          fill="#3B82F6" />
+  </g>
+
+  <!-- 6. Solid Format Accent Dots (WAV, MP3, MIDI) -->
+  <g id="format-dots">
+    <circle cx="236" cy="420" r="4" fill="#4A89C8">
+      <title>WAV</title>
+    </circle>
+    <circle cx="256" cy="420" r="4" fill="#E2E8F0">
+      <title>MP3</title>
+    </circle>
+    <circle cx="276" cy="420" r="4" fill="#7E72A6">
+      <title>MIDI</title>
+    </circle>
+  </g>
+</svg>

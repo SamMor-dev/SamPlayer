@@ -98,6 +98,7 @@ O SamPlayer foi escrito com código limpo e desacoplado para você poder customi
 | **Lógica do Motor de Áudio e Sintetizador** | `app/src/main/java/com/example/player/AudioPlayerEngine.kt` |
 | **Formatos e Filtros de Áudio (MP3/WAV/MIDI)** | `app/src/main/java/com/example/model/AudioFormat.kt` |
 | **Estrutura do Banco de Dados Local** | `app/src/main/java/com/example/data/local/` (Room Entities & DAOs) |
+| **Ícone Vetorial Aberto (SVG)** | [`app_icon.svg`](app_icon.svg) (100% editável no Figma, Inkscape ou Illustrator) |
 
 ---
 

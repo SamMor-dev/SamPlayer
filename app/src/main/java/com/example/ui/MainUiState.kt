@@ -5,6 +5,7 @@ package com.example.ui
 
 import com.example.model.AudioFormat
 import com.example.model.Track
+import com.example.ui.theme.AppThemeMode
 
 /**
  * Filter categories for segmenting audio tracks cleanly by format or custom view.
@@ -51,5 +52,6 @@ data class MainUiState(
     val folders: List<String> = emptyList(),
     val selectedFolder: String? = null,
     val isFullPlayerVisible: Boolean = false,
+    val themeMode: AppThemeMode = AppThemeMode.DARK,
     val statusMessage: String? = null
 )

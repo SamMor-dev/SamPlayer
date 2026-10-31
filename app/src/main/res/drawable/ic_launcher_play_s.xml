@@ -1,0 +1,43 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Acoustic Rings -->
+    <path
+        android:pathData="M54,54m-38,0a38,38 0 1,1 76,0a38,38 0 1,1 -76,0"
+        android:strokeWidth="0.8"
+        android:strokeColor="#252C38" />
+    <path
+        android:pathData="M54,54m-28,0a28,28 0 1,1 56,0a28,28 0 1,1 -56,0"
+        android:strokeWidth="0.8"
+        android:strokeColor="#1F2633" />
+
+    <!-- Letter S Upper Arc -->
+    <path
+        android:pathData="M 68,34 C 68,34 54,28 42,34 C 32,39 33,50 44,54 L 51,56"
+        android:strokeWidth="6"
+        android:strokeColor="#F1F5F9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Letter S Lower Arc -->
+    <path
+        android:pathData="M 57,52 L 64,54 C 75,58 76,69 66,74 C 54,80 40,74 40,74"
+        android:strokeWidth="6"
+        android:strokeColor="#F1F5F9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Center Disc -->
+    <path
+        android:pathData="M54,54m-12,0a12,12 0 1,1 24,0a12,12 0 1,1 -24,0"
+        android:fillColor="#1A202C"
+        android:strokeWidth="0.8"
+        android:strokeColor="#2D3748" />
+
+    <!-- Solid Geometric Play Triangle -->
+    <path
+        android:pathData="M50.5,47.5 L60,54 L50.5,60.5 Z"
+        android:fillColor="#3B82F6" />
+</vector>

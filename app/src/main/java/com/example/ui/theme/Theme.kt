@@ -3,72 +3,94 @@
 
 package com.example.ui.theme
 
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = ElectricCyan,
-    onPrimary = Color(0xFF00363D),
-    primaryContainer = Color(0xFF004F58),
-    onPrimaryContainer = Color(0xFF80F0FF),
-    secondary = NeonViolet,
-    onSecondary = Color(0xFF381E72),
-    secondaryContainer = Color(0xFF4F378B),
-    onSecondaryContainer = Color(0xFFE8DDFF),
-    tertiary = AmberGlow,
-    onTertiary = Color(0xFF452B00),
-    tertiaryContainer = Color(0xFF633F00),
-    onTertiaryContainer = Color(0xFFFFDDB3),
-    background = CarbonBlack,
-    onBackground = WhiteText,
-    surface = SlateDark,
-    onSurface = WhiteText,
-    surfaceVariant = SlateSurface,
-    onSurfaceVariant = GrayText,
-    outline = SlateBorder
+/**
+ * Three distinct sober, flat (non-gradient) themes for SamPlayer.
+ */
+enum class AppThemeMode(val title: String, val description: String) {
+    DARK("Escuro", "Carvão fosco e ardósia sóbria"),
+    LIGHT("Claro", "Branco estúdio e acabamento papel"),
+    BLUE("Azul Sóbrio", "Azul marinho nórdico fosco")
+}
+
+// 1. Escuro (Sober Dark - Carvão e ardósia matte)
+private val SoberDarkColorScheme = darkColorScheme(
+    primary = DarkPrimary,
+    onPrimary = DarkOnPrimary,
+    primaryContainer = DarkSurfaceVariant,
+    onPrimaryContainer = DarkTextPrimary,
+    secondary = DarkSecondary,
+    onSecondary = DarkOnPrimary,
+    secondaryContainer = Color(0xFF282F3B),
+    onSecondaryContainer = DarkTextPrimary,
+    tertiary = Color(0xFFCBD5E1),
+    onTertiary = Color(0xFF0F172A),
+    background = DarkBg,
+    onBackground = DarkTextPrimary,
+    surface = DarkSurface,
+    onSurface = DarkTextPrimary,
+    surfaceVariant = DarkSurfaceVariant,
+    onSurfaceVariant = DarkTextSecondary,
+    outline = DarkBorder
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF006874),
-    onPrimary = Color.White,
-    primaryContainer = Color(0xFF97F0FF),
-    onPrimaryContainer = Color(0xFF001F24),
-    secondary = Color(0xFF6750A4),
+// 2. Claro (Sober Light - Branco estúdio e contraste tipográfico)
+private val SoberLightColorScheme = lightColorScheme(
+    primary = LightPrimary,
+    onPrimary = LightOnPrimary,
+    primaryContainer = LightSurfaceVariant,
+    onPrimaryContainer = LightTextPrimary,
+    secondary = LightSecondary,
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFE8DDFF),
-    onSecondaryContainer = Color(0xFF22005D),
-    tertiary = Color(0xFF825500),
+    secondaryContainer = Color(0xFFE2E8F0),
+    onSecondaryContainer = LightTextPrimary,
+    tertiary = Color(0xFF334155),
     onTertiary = Color.White,
-    background = Color(0xFFF8F9FA),
-    onBackground = Color(0xFF191C1E),
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF191C1E),
-    surfaceVariant = Color(0xFFE1E2E4),
-    onSurfaceVariant = Color(0xFF40484A),
-    outline = Color(0xFF70787C)
+    background = LightBg,
+    onBackground = LightTextPrimary,
+    surface = LightSurface,
+    onSurface = LightTextPrimary,
+    surfaceVariant = LightSurfaceVariant,
+    onSurfaceVariant = LightTextSecondary,
+    outline = LightBorder
+)
+
+// 3. Azul Sóbrio (Nordic Navy - Marinho fosco sólido, sem gradientes)
+private val SoberBlueColorScheme = darkColorScheme(
+    primary = BluePrimary,
+    onPrimary = BlueOnPrimary,
+    primaryContainer = BlueSurfaceVariant,
+    onPrimaryContainer = BlueTextPrimary,
+    secondary = BlueSecondary,
+    onSecondary = BlueOnPrimary,
+    secondaryContainer = Color(0xFF243F5E),
+    onSecondaryContainer = BlueTextPrimary,
+    tertiary = Color(0xFFB0C8E0),
+    onTertiary = Color(0xFF0A1522),
+    background = BlueBg,
+    onBackground = BlueTextPrimary,
+    surface = BlueSurface,
+    onSurface = BlueTextPrimary,
+    surfaceVariant = BlueSurfaceVariant,
+    onSurfaceVariant = BlueTextSecondary,
+    outline = BlueBorder
 )
 
 @Composable
 fun MyApplicationTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    themeMode: AppThemeMode = AppThemeMode.DARK,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    val colorScheme: ColorScheme = when (themeMode) {
+        AppThemeMode.DARK -> SoberDarkColorScheme
+        AppThemeMode.LIGHT -> SoberLightColorScheme
+        AppThemeMode.BLUE -> SoberBlueColorScheme
     }
 
     MaterialTheme(
