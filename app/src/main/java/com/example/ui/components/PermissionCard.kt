@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 
 /**
  * Clean permission request card adhering to Google Play policies.
- * Clearly explains that audio permission is used strictly to index MP3, WAV, and MIDI files.
+ * Clearly explains that audio permission is used strictly to index supported audio files (MP3, WAV, FLAC, M4A, OGG).
  */
 @Composable
 fun PermissionCard(
@@ -76,7 +76,7 @@ fun PermissionCard(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "SamPlayer reads local .mp3, .wav, and .mid files directly from your device with zero cloud tracking and pure native performance.",
+                text = "SamPlayer reads local audio files (MP3, WAV, FLAC, M4A, OGG) directly from your device with zero cloud tracking and pure native performance.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 13.sp

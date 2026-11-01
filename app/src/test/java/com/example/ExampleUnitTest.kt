@@ -17,9 +17,12 @@ class ExampleUnitTest {
     fun testAudioFormatResolution() {
         assertEquals(AudioFormat.MP3, AudioFormat.fromPathOrMime("song.mp3"))
         assertEquals(AudioFormat.WAV, AudioFormat.fromPathOrMime("audio.wav"))
-        assertEquals(AudioFormat.MIDI, AudioFormat.fromPathOrMime("theme.mid"))
-        assertEquals(AudioFormat.MIDI, AudioFormat.fromPathOrMime("track.midi"))
+        assertEquals(AudioFormat.FLAC, AudioFormat.fromPathOrMime("album.flac"))
+        assertEquals(AudioFormat.M4A, AudioFormat.fromPathOrMime("track.m4a"))
+        assertEquals(AudioFormat.M4A, AudioFormat.fromPathOrMime("audio.aac"))
+        assertEquals(AudioFormat.OGG, AudioFormat.fromPathOrMime("music.ogg"))
         assertEquals(AudioFormat.MP3, AudioFormat.fromPathOrMime("test", "audio/mpeg"))
+        assertNull(AudioFormat.fromPathOrMime("theme.mid"))
         assertNull(AudioFormat.fromPathOrMime("image.png"))
     }
 

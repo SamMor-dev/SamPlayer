@@ -68,16 +68,22 @@
           fill="#174C98" />
   </g>
 
-  <!-- 6. Solid Format Accent Dots (WAV, MP3, MIDI) -->
+  <!-- 6. Solid Format Accent Dots (WAV, MP3, FLAC, M4A, OGG) -->
   <g id="format-dots">
-    <circle cx="236" cy="420" r="4" fill="#174C98">
+    <circle cx="216" cy="420" r="4" fill="#174C98">
       <title>WAV</title>
     </circle>
-    <circle cx="256" cy="420" r="4" fill="#E2E8F0">
+    <circle cx="236" cy="420" r="4" fill="#CC8538">
       <title>MP3</title>
     </circle>
+    <circle cx="256" cy="420" r="4" fill="#2E7D32">
+      <title>FLAC</title>
+    </circle>
     <circle cx="276" cy="420" r="4" fill="#7E72A6">
-      <title>MIDI</title>
+      <title>M4A</title>
+    </circle>
+    <circle cx="296" cy="420" r="4" fill="#D84315">
+      <title>OGG</title>
     </circle>
   </g>
 </svg>

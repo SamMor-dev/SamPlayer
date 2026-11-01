@@ -24,7 +24,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 /**
- * Lean, native Android MediaPlayer engine tailored for local MP3, WAV, and MIDI.
+ * Lean, native Android MediaPlayer engine tailored for local audio formats (MP3, WAV, FLAC, M4A, OGG).
  *
  * MEMORY & HARDWARE OPTIMIZATION:
  * 1. Single MediaPlayer instance reused safely; strictly released on application teardown.
@@ -67,7 +67,7 @@ class AudioPlayerEngine(
     }
 
     /**
-     * Plays the specified track. Handles local file URIs, ContentResolver URIs, and MIDI files.
+     * Plays the specified track. Handles local file URIs and ContentResolver URIs.
      */
     fun play(track: Track) {
         try {

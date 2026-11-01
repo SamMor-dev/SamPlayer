@@ -17,7 +17,9 @@ enum class AudioFormat(
 ) {
     MP3("mp3", "audio/mpeg", "MP3", Color(0xFFCC8538)),
     WAV("wav", "audio/wav", "WAV", Color(0xFF174C98)),
-    MIDI("mid", "audio/midi", "MIDI", Color(0xFF7E72A6));
+    FLAC("flac", "audio/flac", "FLAC", Color(0xFF2E7D32)),
+    M4A("m4a", "audio/mp4", "M4A", Color(0xFF7E72A6)),
+    OGG("ogg", "audio/ogg", "OGG", Color(0xFFD84315));
 
     companion object {
         /**
@@ -29,7 +31,9 @@ enum class AudioFormat(
             return when {
                 lower.endsWith(".mp3") || mimeType?.contains("mpeg", ignoreCase = true) == true -> MP3
                 lower.endsWith(".wav") || mimeType?.contains("wav", ignoreCase = true) == true -> WAV
-                lower.endsWith(".mid") || lower.endsWith(".midi") || mimeType?.contains("midi", ignoreCase = true) == true -> MIDI
+                lower.endsWith(".flac") || mimeType?.contains("flac", ignoreCase = true) == true -> FLAC
+                lower.endsWith(".m4a") || lower.endsWith(".aac") || mimeType?.contains("mp4", ignoreCase = true) == true || mimeType?.contains("aac", ignoreCase = true) == true -> M4A
+                lower.endsWith(".ogg") || mimeType?.contains("ogg", ignoreCase = true) == true -> OGG
                 else -> null
             }
         }

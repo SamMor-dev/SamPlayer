@@ -33,10 +33,10 @@ import com.example.ui.FilterCategory
 import com.example.ui.MainUiState
 
 /**
- * Clean segmented format bar to isolate tracks by their audio container (.mp3, .wav, .mid).
+ * Segmented format bar to isolate tracks by their audio container (MP3, WAV, FLAC, M4A, OGG).
  *
  * MEMORY & RENDERING EFFICIENCY:
- * Rendered using lightweight Compose FilterChips without recreating state models.
+ * Dynamically iterates over supported AudioFormat entries using lightweight Compose FilterChips.
  */
 @Composable
 fun AudioFormatChipBar(
@@ -68,85 +68,36 @@ fun AudioFormatChipBar(
             modifier = Modifier.testTag("filter_chip_all")
         )
 
-        // 2. MP3
-        val isMp3Selected = (uiState.selectedFilter as? FilterCategory.Format)?.format == AudioFormat.MP3
-        FilterChip(
-            selected = isMp3Selected,
-            onClick = { onFilterSelected(FilterCategory.Format(AudioFormat.MP3)) },
-            label = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = "MP3",
-                        color = if (isMp3Selected) MaterialTheme.colorScheme.onPrimaryContainer else AudioFormat.MP3.accentColor,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp
-                    )
-                    Text("(${uiState.mp3Count})")
-                }
-            },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = AudioFormat.MP3.accentColor.copy(alpha = 0.25f),
-                selectedLabelColor = MaterialTheme.colorScheme.onSurface
-            ),
-            modifier = Modifier.testTag("filter_chip_mp3")
-        )
+        // 2. Dynamic Audio Formats (MP3, WAV, FLAC, M4A, OGG)
+        AudioFormat.entries.forEach { format ->
+            val isFormatSelected = (uiState.selectedFilter as? FilterCategory.Format)?.format == format
+            val count = uiState.countForFormat(format)
+            FilterChip(
+                selected = isFormatSelected,
+                onClick = { onFilterSelected(FilterCategory.Format(format)) },
+                label = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(
+                            text = format.displayName,
+                            color = if (isFormatSelected) MaterialTheme.colorScheme.onPrimaryContainer else format.accentColor,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp
+                        )
+                        Text("($count)")
+                    }
+                },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = format.accentColor.copy(alpha = 0.25f),
+                    selectedLabelColor = MaterialTheme.colorScheme.onSurface
+                ),
+                modifier = Modifier.testTag("filter_chip_${format.extension}")
+            )
+        }
 
-        // 3. WAV
-        val isWavSelected = (uiState.selectedFilter as? FilterCategory.Format)?.format == AudioFormat.WAV
-        FilterChip(
-            selected = isWavSelected,
-            onClick = { onFilterSelected(FilterCategory.Format(AudioFormat.WAV)) },
-            label = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = "WAV",
-                        color = if (isWavSelected) MaterialTheme.colorScheme.onPrimaryContainer else AudioFormat.WAV.accentColor,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp
-                    )
-                    Text("(${uiState.wavCount})")
-                }
-            },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = AudioFormat.WAV.accentColor.copy(alpha = 0.25f),
-                selectedLabelColor = MaterialTheme.colorScheme.onSurface
-            ),
-            modifier = Modifier.testTag("filter_chip_wav")
-        )
-
-        // 4. MIDI (.mid)
-        val isMidiSelected = (uiState.selectedFilter as? FilterCategory.Format)?.format == AudioFormat.MIDI
-        FilterChip(
-            selected = isMidiSelected,
-            onClick = { onFilterSelected(FilterCategory.Format(AudioFormat.MIDI)) },
-            label = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = "MIDI (.mid)",
-                        color = if (isMidiSelected) MaterialTheme.colorScheme.onPrimaryContainer else AudioFormat.MIDI.accentColor,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp
-                    )
-                    Text("(${uiState.midiCount})")
-                }
-            },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = AudioFormat.MIDI.accentColor.copy(alpha = 0.25f),
-                selectedLabelColor = MaterialTheme.colorScheme.onSurface
-            ),
-            modifier = Modifier.testTag("filter_chip_midi")
-        )
-
-        // 5. FAVORITES
+        // 3. FAVORITES
         val isFavSelected = uiState.selectedFilter is FilterCategory.Favorites
         FilterChip(
             selected = isFavSelected,
@@ -168,7 +119,7 @@ fun AudioFormatChipBar(
             modifier = Modifier.testTag("filter_chip_favorites")
         )
 
-        // 6. FOLDERS
+        // 4. FOLDERS
         val isFoldersSelected = uiState.selectedFilter is FilterCategory.Folders
         FilterChip(
             selected = isFoldersSelected,

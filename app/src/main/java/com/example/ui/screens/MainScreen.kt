@@ -272,7 +272,7 @@ fun MainScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Add WAV & MIDI Samples") },
+                                text = { Text("Add Demo Audio Samples") },
                                 leadingIcon = { Icon(Icons.Filled.MusicNote, contentDescription = null) },
                                 onClick = {
                                     viewModel.generateStarterSamples()
@@ -325,7 +325,7 @@ fun MainScreen(
                 )
             }
 
-            // Segmented Format Bar (All, MP3, WAV, MIDI, Favorites, Folders)
+            // Segmented Format Bar (All, MP3, WAV, FLAC, M4A, OGG, Favorites, Folders)
             AudioFormatChipBar(
                 uiState = uiState,
                 onFilterSelected = { filter ->
@@ -583,7 +583,7 @@ private fun EmptyStateView(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "SamPlayer plays MP3, WAV, and MIDI files with maximum native performance. Add demo samples or open local files below.",
+                text = "SamPlayer plays local audio files (MP3, WAV, FLAC, M4A, OGG) with maximum native performance. Add demo samples or open local files below.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,

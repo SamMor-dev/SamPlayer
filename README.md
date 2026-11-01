@@ -7,10 +7,10 @@
 
 **SamPlayer** é um reprodutor de música local nativo para Android, ultra-minimalista e focado em **altíssimo desempenho, consumo mínimo de memória RAM e zero bloatware de segundo plano**. 
 
-Projetado especificamente para reproduzir arquivos **MP3**, **WAV** e **MIDI (.mid)** sem sobrecarregar o hardware e separando as faixas estritamente por formato em uma interface limpa, moderna e reativa construída com **Jetpack Compose (Material Design 3)**.
+Projetado especificamente para reproduzir arquivos de alta fidelidade como **MP3**, **WAV**, **FLAC**, **M4A/AAC** e **OGG**, separando as faixas estritamente por formato em uma interface limpa, moderna e reativa construída com **Jetpack Compose (Material Design 3)**.
 
 > 📱 **Dispositivo Homologado & Testado:**
-> O aplicativo foi exaustivamente testado e otimizado no **Samsung Galaxy A26** (One UI / Android 14+ / 120Hz), garantindo rolagem a 60/120 FPS cravados, tempo de resposta instantâneo, consumo de RAM residual na casa de megabytes de um dígito e reprodução fluida do sintetizador General MIDI nativo do Android.
+> O aplicativo foi exaustivamente testado e otimizado no **Samsung Galaxy A26** (One UI / Android 14+ / 120Hz), garantindo rolagem a 60/120 FPS cravados, tempo de resposta instantâneo, consumo de RAM residual extremamente baixo e reprodução fluida via decodificadores nativos do Android.
 
 ---
 
@@ -38,17 +38,21 @@ Projetado especificamente para reproduzir arquivos **MP3**, **WAV** e **MIDI (.m
 | Formato | Extensão | Decodificador / Mecanismo | Características no SamPlayer |
 |:---|:---:|:---|:---|
 | **MP3** | `.mp3` | Android MediaCodec / MPEG Layer III | Indexação rápida, identificação de tags essenciais |
-| **WAV** | `.wav` | Linear PCM RIFF Uncompressed | Reprodução de áudio sem perdas (lossless) sem delay |
-| **MIDI** | `.mid`, `.midi` | Android Internal Synth (General MIDI) | Arquivos ultra-leves (~1-50 KB), sintetizados em tempo real |
+| **WAV** | `.wav` | Linear PCM RIFF Uncompressed | Reprodução sem perdas (lossless) sem delay |
+| **FLAC** | `.flac` | Free Lossless Audio Codec | Alta fidelidade com compressão sem perdas |
+| **M4A / AAC** | `.m4a`, `.aac` | Advanced Audio Coding (AAC) | Formato padrão de alta eficiência e qualidade |
+| **OGG** | `.ogg` | Ogg Vorbis / Opus Native Codec | Áudio comprimido de código aberto e alto desempenho |
 
-As músicas são segregadas em abas dedicadas (**All**, **MP3**, **WAV**, **MIDI**, **Favorites** e **Folders**), mantendo a biblioteca sempre organizada.
+*(Nota: Formatos sintéticos sem síntese em tempo real, como o MIDI, foram descontinuados para manter o reprodutor focado em áudio digital real e decodificação nativa de alta qualidade).*
+
+As músicas são segregadas em abas dedicadas e dinâmicas (**All**, **MP3**, **WAV**, **FLAC**, **M4A**, **OGG**, **Favorites** e **Folders**), mantendo a biblioteca sempre organizada.
 
 ---
 
 ## 🛠️ Tecnologias & Arquitetura
 
 - **Linguagem:** 100% Kotlin (versão 2.x)
-- **UI & Design:** Jetpack Compose + Material Design 3 (Tema escuro Obsidian com destaque Neon Cyan/Violet)
+- **UI & Design:** Jetpack Compose + Material Design 3 (Temas Escuro, Claro e Azul Profundo)
 - **Persistência Local:** AndroidX Room Database com índices dedicados em `format_name`, `is_favorite` e `folder_name`
 - **Áudio Nativo:** `android.media.MediaPlayer` e `android.media.AudioManager` (gerenciamento robusto de `AudioFocusRequest`)
 - **Concorrência:** Kotlin Coroutines (`Dispatchers.IO` & `Dispatchers.Main.immediate`) + `StateFlow`
@@ -92,11 +96,11 @@ O SamPlayer foi escrito com código limpo e desacoplado para você poder customi
 
 | O que você quer customizar? | Arquivo para editar |
 |:---|:---|
-| **Cores, Temas e Paleta Neon** | `app/src/main/java/com/example/ui/theme/Color.kt` e `Theme.kt` |
+| **Cores, Temas e Paleta de Cores** | `app/src/main/java/com/example/ui/theme/Color.kt` e `Theme.kt` |
 | **Telas e Interface do Usuário (Compose)** | `app/src/main/java/com/example/ui/screens/MainScreen.kt` |
 | **Mini Player e Player Expandido** | `app/src/main/java/com/example/ui/components/MiniPlayerBar.kt` e `FullPlayerDialog.kt` |
-| **Lógica do Motor de Áudio e Sintetizador** | `app/src/main/java/com/example/player/AudioPlayerEngine.kt` |
-| **Formatos e Filtros de Áudio (MP3/WAV/MIDI)** | `app/src/main/java/com/example/model/AudioFormat.kt` |
+| **Lógica do Motor de Áudio** | `app/src/main/java/com/example/player/AudioPlayerEngine.kt` |
+| **Formatos e Filtros de Áudio (MP3/WAV/FLAC/M4A/OGG)** | `app/src/main/java/com/example/model/AudioFormat.kt` |
 | **Estrutura do Banco de Dados Local** | `app/src/main/java/com/example/data/local/` (Room Entities & DAOs) |
 | **Ícone Vetorial Aberto (SVG)** | [`app_icon.svg`](app_icon.svg) (100% editável no Figma, Inkscape ou Illustrator) |
 

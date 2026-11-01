@@ -42,7 +42,7 @@ class TrackRepository(
         .flowOn(Dispatchers.IO)
 
     /**
-     * Exposes tracks filtered strictly by audio format (MP3, WAV, MIDI).
+     * Exposes tracks filtered strictly by audio format (MP3, WAV, FLAC, M4A, OGG).
      */
     fun getTracksByFormat(format: AudioFormat): Flow<List<Track>> =
         trackDao.getTracksByFormatFlow(format.name)
@@ -78,7 +78,7 @@ class TrackRepository(
     }
 
     /**
-     * Scans the system MediaStore for MP3, WAV, and MIDI files without loading heavy metadata into RAM.
+     * Scans the system MediaStore for supported audio files (MP3, WAV, FLAC, M4A, OGG) without loading heavy metadata into RAM.
      *
      * MEMORY EFFICIENCY LOGIC:
      * - Uses a minimal projection array (only primitive IDs and text columns).
@@ -101,12 +101,14 @@ class TrackRepository(
             MediaStore.Audio.Media.MIME_TYPE
         )
 
-        // Filter for music and our 3 specific formats (.mp3, .wav, .mid/.midi)
+        // Filter for music and supported formats (.mp3, .wav, .flac, .m4a, .aac, .ogg)
         val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0 OR " +
                 "${MediaStore.Audio.Media.DATA} LIKE '%.mp3' OR " +
                 "${MediaStore.Audio.Media.DATA} LIKE '%.wav' OR " +
-                "${MediaStore.Audio.Media.DATA} LIKE '%.mid' OR " +
-                "${MediaStore.Audio.Media.DATA} LIKE '%.midi'"
+                "${MediaStore.Audio.Media.DATA} LIKE '%.flac' OR " +
+                "${MediaStore.Audio.Media.DATA} LIKE '%.m4a' OR " +
+                "${MediaStore.Audio.Media.DATA} LIKE '%.aac' OR " +
+                "${MediaStore.Audio.Media.DATA} LIKE '%.ogg'"
 
         val sortOrder = "${MediaStore.Audio.Media.TITLE} COLLATE NOCASE ASC"
 

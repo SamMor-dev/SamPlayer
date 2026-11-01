@@ -45,13 +45,13 @@ data class MainUiState(
     val sortOption: SortOption = SortOption.TITLE,
     val displayedTracks: List<Track> = emptyList(),
     val allTracksCount: Int = 0,
-    val mp3Count: Int = 0,
-    val wavCount: Int = 0,
-    val midiCount: Int = 0,
+    val formatCounts: Map<AudioFormat, Int> = emptyMap(),
     val favoritesCount: Int = 0,
     val folders: List<String> = emptyList(),
     val selectedFolder: String? = null,
     val isFullPlayerVisible: Boolean = false,
     val themeMode: AppThemeMode = AppThemeMode.DARK,
     val statusMessage: String? = null
-)
+) {
+    fun countForFormat(format: AudioFormat): Int = formatCounts[format] ?: 0
+}

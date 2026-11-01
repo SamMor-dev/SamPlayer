@@ -1,6 +1,6 @@
 {
   "name": "SamPlayer",
-  "description": "Minimalist, high-performance local music player for MP3, WAV, and MIDI files with format-based separation and native audio decoding.",
+  "description": "Minimalist, high-performance local music player for MP3, WAV, FLAC, M4A, and OGG files with format-based separation and native audio decoding.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

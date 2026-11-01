@@ -96,16 +96,10 @@ class MainViewModel(
         val theme = args[10] as AppThemeMode
 
         // Format and favorite count metrics
-        var mp3 = 0
-        var wav = 0
-        var midi = 0
+        val formatCountsMap = mutableMapOf<AudioFormat, Int>()
         var favs = 0
         for (t in allTracks) {
-            when (t.format) {
-                AudioFormat.MP3 -> mp3++
-                AudioFormat.WAV -> wav++
-                AudioFormat.MIDI -> midi++
-            }
+            formatCountsMap[t.format] = (formatCountsMap[t.format] ?: 0) + 1
             if (t.isFavorite) favs++
         }
 
@@ -149,9 +143,7 @@ class MainViewModel(
             sortOption = sort,
             displayedTracks = sorted,
             allTracksCount = allTracks.size,
-            mp3Count = mp3,
-            wavCount = wav,
-            midiCount = midi,
+            formatCounts = formatCountsMap,
             favoritesCount = favs,
             folders = folders,
             selectedFolder = folder,
@@ -188,7 +180,7 @@ class MainViewModel(
     fun scanStorage() {
         viewModelScope.launch {
             _isLoading.value = true
-            _statusMessage.value = "Scanning device for MP3, WAV, and MIDI..."
+            _statusMessage.value = "Scanning device for audio files (MP3, WAV, FLAC, M4A, OGG)..."
             try {
                 val count = repository.scanDeviceAudio()
                 _statusMessage.value = if (count > 0) "Indexed $count audio files" else "No new files found. Samples available."
@@ -201,12 +193,12 @@ class MainViewModel(
     }
 
     /**
-     * Injects synthetic .wav and .mid samples into app storage for immediate listening.
+     * Injects synthetic audio samples into app storage for immediate listening.
      */
     fun generateStarterSamples() {
         viewModelScope.launch {
             _isLoading.value = true
-            _statusMessage.value = "Generating high-efficiency WAV & MIDI test tracks..."
+            _statusMessage.value = "Generating high-efficiency demo audio samples..."
             try {
                 val samples = repository.generateStarterSamples()
                 _statusMessage.value = "Added ${samples.size} sample files!"
