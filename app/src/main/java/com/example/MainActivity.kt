@@ -20,7 +20,11 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.ui.MainViewModel
+import com.example.ui.screens.LicensesScreen
 import com.example.ui.screens.MainScreen
 import com.example.ui.theme.MyApplicationTheme
 
@@ -80,13 +84,29 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                MainScreen(
-                    viewModel = viewModel,
-                    hasAudioPermission = hasPermission,
-                    onRequestPermission = {
-                        permissionLauncher.launch(audioPermission)
+                val navController = rememberNavController()
+
+                NavHost(navController = navController, startDestination = "main") {
+                    composable("main") {
+                        MainScreen(
+                            viewModel = viewModel,
+                            hasAudioPermission = hasPermission,
+                            onRequestPermission = {
+                                permissionLauncher.launch(audioPermission)
+                            },
+                            onNavigateToLicenses = {
+                                navController.navigate("licenses")
+                            }
+                        )
                     }
-                )
+                    composable("licenses") {
+                        LicensesScreen(
+                            onNavigateBack = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
+                }
             }
         }
     }

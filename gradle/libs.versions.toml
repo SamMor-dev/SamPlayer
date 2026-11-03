@@ -33,6 +33,7 @@ loggingInterceptor = "4.10.0"
 okhttp = "4.10.0"
 moshiKotlin = "1.15.2"
 moshiKotlinCodegen = "1.15.2"
+aboutLibraries = "11.1.0"
 datastorePreferences = "1.1.7"
 robolectric = "4.16.1"
 firebaseBom = "34.17.0"
@@ -94,6 +95,8 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
 androidx-credentials-play-services = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
+aboutLibrariesCore = { group = "com.mikepenz", name = "about-libraries-core", version.ref = "aboutLibraries" }
+aboutLibrariesComposeM3 = { group = "com.mikepenz", name = "about-libraries-compose-m3", version.ref = "aboutLibraries" }
 
 
 [plugins]
@@ -102,3 +105,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "googleDevtoolsKsp" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+aboutLibraries = { id = "com.mikepenz.about-libraries.plugin", version.ref = "aboutLibraries" }

@@ -103,6 +103,7 @@ fun MainScreen(
     viewModel: MainViewModel,
     hasAudioPermission: Boolean,
     onRequestPermission: () -> Unit,
+    onNavigateToLicenses: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -287,6 +288,14 @@ fun MainScreen(
                                     showMoreMenu = false
                                 }
                             )
+                            DropdownMenuItem(
+                                text = { Text("Open Source Licenses") },
+                                leadingIcon = { Icon(Icons.Filled.Info, contentDescription = null) },
+                                onClick = {
+                                    onNavigateToLicenses()
+                                    showMoreMenu = false
+                                }
+                            )
                         }
                     }
                 },
@@ -449,6 +458,16 @@ fun MainScreen(
             confirmButton = {
                 Button(onClick = { showAboutDialog = false }) {
                     Text("Close")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showAboutDialog = false
+                        onNavigateToLicenses()
+                    }
+                ) {
+                    Text("Licenses")
                 }
             }
         )
